@@ -5,13 +5,15 @@ var http = require('http').Server(app);
 var path = require('path');
 var io = require('socket.io')(http);
 
+var port = process.env.PORT || 3000;
+
 app.use(express.static(path.join(__dirname, 'app')));
 
 app.get('/', function(req, res, next) {
   res.status(200).sendFile(path.join(__dirname + '/app/index.html'));
 });
 
-http.listen(3000, function() {
+http.listen(port, function() {
   console.log('Listening on *:3000');
 });
 
