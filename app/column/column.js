@@ -13,8 +13,8 @@ angular.module('myApp')
   };
 })
 
-.controller('columnCtrl', ['$scope', 'MeetingStore', 'mySocket',
-    function($scope, MeetingStore, mySocket) {
+.controller('columnCtrl', ['$scope', 'MeetingStore', 'mySocket', 'meetingActions',
+    function($scope, MeetingStore, mySocket, meetingActions) {
 
   $scope.addToQueue = addToQueue;
 
@@ -27,6 +27,7 @@ angular.module('myApp')
   }
 
   function addToQueue() {
+    meetingActions.addToQueue($scope.header);
     mySocket.emit('message', $scope.header);
     console.log('test');
   }

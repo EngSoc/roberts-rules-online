@@ -7,20 +7,34 @@ angular.module('myApp')
     initialize: function() {
       console.log('Initializing meeting store');
       this.state = this.immutable({
-        currentItemName: 'Motion 4: The VP Education needs to be less good looking'
+        currentItemName: '',
+        currentQueue: null
       });
 
-      this.state.set(QUEUES.CLARIFICATION, ['Jeff', 'Akshay', 'Adelle']);
-      this.state.set(QUEUES.DIRECT_POINT, ['Will']);
-      this.state.set(QUEUES.NEW_POINT, ['Heather', 'Mary']);
+      this.state.set(QUEUES.CLARIFICATION, []);
+      this.state.set(QUEUES.DIRECT_POINT, []);
+      this.state.set(QUEUES.NEW_POINT, []);
     },
 
     handlers: {
-      'addToQueue': 'addToQueue'
+      'addToQueue': 'addToQueue',
+      'removeFromQueue': 'removeFromQueue'
     },
 
     addToQueue: function(payload) {
       console.log('adding to queue');
+      console.log(payload);
+      var oldQueue = this.state.get(payload.queueName);
+      oldQueue.push(payload.username);
+      this.state.set('currentQueue', payload.queueName);
+    },
+
+    removeFromQueue: function(payload) {
+      var currentQueueName = this.state.get('currentQueue');
+      var oldQueue = this.state.get(currentQueueName);
+      this.state.set(currentQueueName, oldQueue.filter(function(name) {
+        return name != payload.username;
+      }));
     },
 
     exports: {
@@ -30,6 +44,10 @@ angular.module('myApp')
 
       get currentItemName() {
         return this.state.get('currentItemName');
+      },
+
+      get currentQueue() {
+        return this.state.get('currentQueue');
       }
     }
   };

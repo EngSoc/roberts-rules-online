@@ -10,20 +10,15 @@ angular
     'angular-storage',
     'angular-jwt'
   ])
-
   .constant('QUEUES', {
     'NEW_POINT': 'New Point',
     'DIRECT_POINT': 'Direct Point',
     'CLARIFICATION': 'Clarification'
   })
-
   .factory('mySocket', function(socketFactory) {
     return socketFactory();
   })
-
-  .config(['$routeProvider', 'fluxProvider', 'authProvider', 'jwtInterceptorProvider', '$httpProvider',
-      function($routeProvider, fluxProvider, authProvider, jwtInterceptorProvider, $httpProvider) {
-
+  .config(['$routeProvider', function($routeProvider) {
     $routeProvider
       .when('/meeting', {
         templateUrl: 'meeting/meeting.html',
@@ -36,6 +31,12 @@ angular
       .otherwise({
         redirectTo: '/meeting'
       });
+  }])
+  .config(['fluxProvider', function(fluxProvider) {
+    fluxProvider.setImmutableDefaults({ immutable: false });
+  }])
+  .config(['authProvider', 'jwtInterceptorProvider', '$httpProvider',
+      function(authProvider, jwtInterceptorProvider, $httpProvider) {
 
     authProvider.init({
       domain: 'engsoc.auth0.com',
@@ -63,8 +64,6 @@ angular
     authProvider.on('loginFailure', function() {
        // Error Callback
     });
-
-    fluxProvider.setImmutableDefaults({ immutable: false });
   }])
   .run(function($rootScope, $location, QUEUES, mySocket, auth, store, jwtHelper) {
     $rootScope.QUEUES = QUEUES;
