@@ -24,15 +24,18 @@ angular
   .config(['$routeProvider', 'fluxProvider', 'authProvider', 'jwtInterceptorProvider', '$httpProvider',
       function($routeProvider, fluxProvider, authProvider, jwtInterceptorProvider, $httpProvider) {
 
-    $routeProvider.when('/login', {
-      templateUrl: 'login/login.html',
-      controller: 'LoginCtrl'
-    })
-    .when('/meeting', {
-      templateUrl: 'meeting/meeting.html',
-      controller: 'MeetingCtrl'
-    })
-    .otherwise({redirectTo: '/meeting'});
+    $routeProvider
+      .when('/meeting', {
+        templateUrl: 'meeting/meeting.html',
+        controller: 'MeetingCtrl'
+      })
+      .when('/login', {
+        templateUrl: 'login/login.html',
+        controller: 'LoginCtrl'
+      })
+      .otherwise({
+        redirectTo: '/meeting'
+      });
 
     authProvider.init({
       domain: 'engsoc.auth0.com',
@@ -80,7 +83,7 @@ angular
           }
         } else {
           // Either show the login page or use the refresh token to get a new idToken
-          $location.path('/');
+          $location.path('/login');
         }
       }
     });
