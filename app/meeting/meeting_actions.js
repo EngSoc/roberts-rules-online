@@ -8,10 +8,17 @@ angular.module('myApp')
   var service = {
     setItemName: setItemName,
     addToQueue: addToQueue,
-    removeFromQueue: removeFromQueue
+    removeFromQueue: removeFromQueue,
+    setState: setState
   };
 
   return service;
+
+  function setState(state) {
+    flux.dispatch('setState', {
+      state: state
+    });
+  }
 
   function setItemName(name) {
     flux.dispatch(actions.SET_ITEM_NAME, {
@@ -20,7 +27,6 @@ angular.module('myApp')
   }
 
   function addToQueue(queueName) {
-    removeFromQueue();
     flux.dispatch('addToQueue', {
       queueName: queueName,
       username: auth.profile.username

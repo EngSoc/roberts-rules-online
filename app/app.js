@@ -65,7 +65,7 @@ angular
        // Error Callback
     });
   }])
-  .run(function($rootScope, $location, QUEUES, mySocket, auth, store, jwtHelper) {
+  .run(function($rootScope, $location, $http, QUEUES, mySocket, auth, store, jwtHelper, meetingActions) {
     $rootScope.QUEUES = QUEUES;
     $rootScope.$on( "$routeChangeStart", function(evt) {
       if(!auth.isAuthenticated) {
@@ -93,7 +93,11 @@ angular
       console.log('Connected');
     });
 
-    mySocket.on('message', function(msg) {
-      console.log(msg);
+    mySocket.on('pull', function(msg) {
+      console.log('Pulling');
+      $http.get('/api/v1/meeting')
+        .then(function(res) {
+          meetingActions.setState(res.data);
+        });
     });
   });

@@ -18,7 +18,16 @@ angular.module('myApp')
 
     handlers: {
       'addToQueue': 'addToQueue',
-      'removeFromQueue': 'removeFromQueue'
+      'removeFromQueue': 'removeFromQueue',
+      'setState': 'setState'
+    },
+
+    setState: function(payload) {
+      this.state.set(QUEUES.CLARIFICATION, payload.state[QUEUES.CLARIFICATION]);
+      this.state.set(QUEUES.DIRECT_POINT, payload.state[QUEUES.DIRECT_POINT]);
+      this.state.set(QUEUES.NEW_POINT, payload.state[QUEUES.NEW_POINT]);
+
+      console.log(this.state);
     },
 
     addToQueue: function(payload) {
@@ -32,7 +41,7 @@ angular.module('myApp')
     removeFromQueue: function(payload) {
       var currentQueueName = this.state.get('currentQueue');
       var oldQueue = this.state.get(currentQueueName);
-      this.state.set(currentQueueName, oldQueue.filter(function(name) {
+      this.state.set(currentQueueName, (oldQueue || []).filter(function(name) {
         return name != payload.username;
       }));
     },
