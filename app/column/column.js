@@ -32,20 +32,25 @@ angular.module('myApp')
   }
 
   function addToQueue() {
-    meetingActions.addToQueue($scope.header);
-    // mySocket.emit('message', $scope.header);
-
-    console.log(auth);
-
     var data = {
       queue: $scope.header,
       name: auth.profile.username
     };
-
-    $http.put('/api/v1/queue', data)
-      .success(function (data, status, headers) {
-      })
-      .error(function(data,status, header, config) {
-      });
+    if ($scope.names.indexOf(auth.profile.username) > -1) {
+      $http.delete('/api/v1/' + data.queue + '/' + data.name)
+        .success(function (data, status, headers) {
+        })
+        .error(function(data,status, header, config) {
+        });
+    } else {
+      meetingActions.addToQueue($scope.header);
+      // mySocket.emit('message', $scope.header);
+      console.log(auth);
+      $http.put('/api/v1/queue', data)
+        .success(function (data, status, headers) {
+        })
+        .error(function(data,status, header, config) {
+        });
+    }
   }
 }]);

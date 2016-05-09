@@ -40,6 +40,13 @@ app.put('/api/v1/queue', function(req, res) {
   res.sendStatus(200);
 });
 
+app.delete('/api/v1/:queue/:username', function(req, res) {
+  console.log(req.body);
+  client.srem(req.params.queue, req.params.username);
+  emitAll();
+  res.sendStatus(200);
+});
+
 app.get('/api/v1/meeting', function(req, res) {
   var values = {};
   Promise.props({
