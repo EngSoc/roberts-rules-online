@@ -12,12 +12,5 @@ angular.module('myApp')
 
 .controller('MeetingCtrl', ['$scope', 'MeetingStore', 'auth',
     function($scope, MeetingStore, auth) {
-  $scope.$listenTo(MeetingStore, setStoreVars);
   $scope.auth = auth;
-
-  setStoreVars();
-
-  function setStoreVars() {
-    $scope.itemName = MeetingStore.currentItemName;
-  }
 }]);

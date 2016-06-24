@@ -13,7 +13,10 @@ angular
   .constant('QUEUES', {
     'NEW_POINT': 'New Point',
     'DIRECT_POINT': 'Direct Point',
-    'CLARIFICATION': 'Clarification'
+    'CLARIFICATION': 'Clarification',
+    'FOR': 'For',
+    'AGAINST': 'Against',
+    'ABSTAIN': 'Abstain'
   })
   .factory('mySocket', function(socketFactory) {
     return socketFactory();

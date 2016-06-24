@@ -14,6 +14,11 @@ angular.module('myApp')
       this.state.set(QUEUES.CLARIFICATION, []);
       this.state.set(QUEUES.DIRECT_POINT, []);
       this.state.set(QUEUES.NEW_POINT, []);
+      this.state.set(QUEUES.FOR, []);
+      this.state.set(QUEUES.AGAINST, []);
+      this.state.set(QUEUES.ABSTAIN, []);
+
+      console.log(this.state);
     },
 
     handlers: {
@@ -26,6 +31,9 @@ angular.module('myApp')
       this.state.set(QUEUES.CLARIFICATION, payload.state[QUEUES.CLARIFICATION]);
       this.state.set(QUEUES.DIRECT_POINT, payload.state[QUEUES.DIRECT_POINT]);
       this.state.set(QUEUES.NEW_POINT, payload.state[QUEUES.NEW_POINT]);
+      this.state.set(QUEUES.FOR, payload.state[QUEUES.FOR]);
+      this.state.set(QUEUES.AGAINST, payload.state[QUEUES.AGAINST]);
+      this.state.set(QUEUES.ABSTAIN, payload.state[QUEUES.ABSTAIN]);
 
       console.log(this.state);
     },
@@ -48,6 +56,7 @@ angular.module('myApp')
 
     exports: {
       getQueue: function(queueName) {
+        debugger;
         return this.state.get(queueName);
       },
 

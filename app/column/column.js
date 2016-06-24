@@ -26,6 +26,7 @@ angular.module('myApp')
 
   function setStoreVars() {
     $timeout(function() {
+      console.log($scope.header);
       $scope.names = MeetingStore.getQueue($scope.header);
       console.log($scope.header + ' ' + $scope.names);
     });

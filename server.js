@@ -25,6 +25,9 @@ var port = process.env.PORT || 3000;
 var CLARIFICATION = 'Clarification';
 var NEW_POINT = 'New Point';
 var DIRECT_POINT = 'Direct Point';
+var FOR = 'For';
+var AGAINST = 'Against';
+var ABSTAIN = 'Abstain';
 
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'app')));
@@ -52,12 +55,18 @@ app.get('/api/v1/meeting', function(req, res) {
   Promise.props({
     clarification: client.smembersAsync(CLARIFICATION),
     newPoint: client.smembersAsync(NEW_POINT),
-    directPoint: client.smembersAsync(DIRECT_POINT)
+    directPoint: client.smembersAsync(DIRECT_POINT),
+    for: client.smembersAsync(FOR),
+    against: client.smembersAsync(AGAINST),
+    abstain: client.smembersAsync(ABSTAIN)
   })
   .then(function(result) {
     values[CLARIFICATION] = result.clarification;
     values[NEW_POINT] = result.newPoint;
     values[DIRECT_POINT] = result.directPoint;
+    values[FOR] = result.for;
+    values[AGAINST] = result.against;
+    values[ABSTAIN] = result.abstain;
     res.send(JSON.stringify(values));
   })
   .catch(function(err) {
