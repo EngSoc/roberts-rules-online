@@ -38,14 +38,14 @@ app.get('/', function(req, res, next) {
 
 app.put('/api/v1/queue', function(req, res) {
   console.log(req.body);
-  client.sadd(req.body.queue, req.body.name);
+  client.rpush(req.body.queue, req.body.name);
   emitAll();
   res.sendStatus(200);
 });
 
 app.delete('/api/v1/:queue/:username', function(req, res) {
   console.log(req.body);
-  client.srem(req.params.queue, req.params.username);
+  client.lrem(req.params.queue, 0, req.params.username);
   emitAll();
   res.sendStatus(200);
 });
@@ -53,12 +53,12 @@ app.delete('/api/v1/:queue/:username', function(req, res) {
 app.get('/api/v1/meeting', function(req, res) {
   var values = {};
   Promise.props({
-    clarification: client.smembersAsync(CLARIFICATION),
-    newPoint: client.smembersAsync(NEW_POINT),
-    directPoint: client.smembersAsync(DIRECT_POINT),
-    for: client.smembersAsync(FOR),
-    against: client.smembersAsync(AGAINST),
-    abstain: client.smembersAsync(ABSTAIN)
+    clarification: client.lrangeAsync(CLARIFICATION, 0, -1),
+    newPoint: client.lrangeAsync(NEW_POINT, 0, -1),
+    directPoint: client.lrangeAsync(DIRECT_POINT, 0, -1),
+    for: client.lrangeAsync(FOR, 0, -1),
+    against: client.lrangeAsync(AGAINST, 0, -1),
+    abstain: client.lrangeAsync(ABSTAIN, 0, -1)
   })
   .then(function(result) {
     values[CLARIFICATION] = result.clarification;
